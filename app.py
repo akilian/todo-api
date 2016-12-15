@@ -48,6 +48,20 @@ def create_task():
     return jsonify({'task': task}), 201
 
 
+@app.route('/todo/api/v1/tasks/testep', methods=['POST'])
+def recreate_task():
+    if not request.json and 'title' not in request.json:
+        abort(300)
+    task = {
+        'id': tasks[-1]['id'] + 1,
+        'title': request.json['title'],
+        'description': request.json.get('description', ''),
+        'done': False,
+    }
+    tasks.append(task)
+    return jsonify({'task': task}), 201
+
+
 @app.errorhandler(404)
 def not_fount(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
